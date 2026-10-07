@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คณิตศาสตร์: ลำดับและอนุกรม</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans Thai",sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;padding:20px;color:#222}.container{max-width:850px;margin:auto}.header{text-align:center;color:#fff;margin-bottom:22px}.header h1{margin:0 0 8px}.card{background:#fff;border-radius:20px;padding:28px;box-shadow:0 10px 30px #0003}.menu{display:grid;grid-template-columns:1fr 1fr;gap:18px}.topic{border:0;border-radius:15px;padding:30px 20px;cursor:pointer;background:#f4f6ff}.topic:hover{transform:translateY(-3px)}.topic h2{margin:0 0 8px}.topic p{color:#666}.hidden{display:none}.quiz-header{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px}.progress-container{height:12px;background:#eee;border-radius:20px;overflow:hidden;margin-bottom:25px}.progress{height:100%;background:#667eea;transition:.3s}.question{font-size:22px;font-weight:bold;line-height:1.6;margin-bottom:22px}.answers{display:grid;gap:12px}.answer{padding:15px;border:2px solid #ddd;background:#fff;border-radius:12px;text-align:left;font-size:17px;cursor:pointer}.answer:hover{border-color:#667eea;background:#f5f6ff}.explanation{margin-top:20px;padding:18px;border-radius:12px;background:#fff3cd;border-left:5px solid #ffc107;line-height:1.8}.next-btn,.btn{margin-top:12px;padding:13px 22px;border:0;border-radius:10px;background:#667eea;color:#fff;font-size:16px;cursor:pointer}.btn.secondary{background:#ddd;color:#222;margin-left:8px}.result{text-align:center}.result-score{font-size:48px;font-weight:bold;color:#667eea;margin:18px}.badge{font-size:42px}@media(max-width:600px){.menu{grid-template-columns:1fr}.card{padding:20px}.question{font-size:19px}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header"><h1>📚 คณิตศาสตร์</h1><p>สื่อการสอนเรื่อง ลำดับและอนุกรม</p></div>
+
+<div id="menu" class="card">
+<h2 style="text-align:center;margin-top:0">เลือกบทเรียน</h2>
+<div class="menu">
+<button class="topic" onclick="startQuiz('sequence')"><h2>🔢 ลำดับ</h2><p>แบบทดสอบ 10 ข้อ</p></button>
+<button class="topic" onclick="startQuiz('series')"><h2>📐 อนุกรม</h2><p>แบบทดสอบ 10 ข้อ</p></button>
+</div></div>
+
+<div id="quiz" class="card hidden">
+<div class="quiz-header"><b id="stage">ด่าน 1 / 10</b><b id="score">คะแนน: 0</b></div>
+<div class="progress-container"><div id="progress" class="progress"></div></div>
+<div id="question" class="question"></div><div id="answers" class="answers"></div>
+<div id="explanation" class="explanation hidden"><h3>❌ คำตอบยังไม่ถูก</h3><div id="explanationText"></div><button class="next-btn" onclick="retryQuestion()">🔄 กลับไปตอบใหม่</button></div>
+</div>
+
+<div id="result" class="card result hidden">
+<div class="badge">🏆</div><h2>จบบทเรียนแล้ว!</h2><p id="resultTopic"></p><div id="resultScore" class="result-score">0 / 10</div><p id="resultMessage"></p>
+<button class="btn" onclick="restartQuiz()">🔄 ทำบทนี้อีกครั้ง</button><button class="btn secondary" onclick="backMenu()">🏠 หน้าหลัก</button>
+</div>
+</div>
+
+<script>
+const questions={
+sequence:[
+["กำหนดลำดับเลขคณิต a₃=11 และ a₉=35 จงหา a₂₀",["71","75","79","83"],2,"จาก a₉-a₃=6d ได้ 35-11=6d จึง d=4 และ a₃=a₁+2d ทำให้ a₁=3<br>a₂₀=3+19(4)=<b>79</b>"],
+["กำหนดลำดับเลขคณิตมี a₅=17 และ a₁₂=45 จงหา S₂₀",["780","870","890","910"],0,"หา d จาก 45-17=7d จึง d=4 และ a₁=17-4(4)=1<br>a₂₀=1+19(4)=77<br>S₂₀=20/2(1+77)=<b>780</b>"],
+["ลำดับหนึ่งมี a₄=10 และ a₁₀=28 จงหา a₂₅",["70","73","76","79"],1,"28-10=6d จึง d=3<br>a₄=a₁+3d ดังนั้น a₁=1<br>a₂₅=1+24(3)=<b>73</b>"],
+["ถ้า aₙ=3n²-2n+5 ผลต่าง aₙ₊₁-aₙ เท่ากับข้อใด?",["6n+1","6n+2","6n+3","3n+1"],0,"aₙ₊₁=3(n+1)²-2(n+1)+5=3n²+4n+6<br>ลบด้วย aₙ ได้ <b>6n+1</b>"],
+["กำหนดลำดับเรขาคณิต a₂=6 และ a₅=162 โดยมีอัตราส่วนร่วมเป็นบวก จงหา a₈",["4,374","4,860","5,832","6,561"],0,"a₅/a₂=r³=162/6=27 จึง r=3<br>a₈=a₅r³=162(27)=<b>4,374</b>"],
+["ลำดับ 2, x, 18 เป็นลำดับเรขาคณิต โดย x เป็นจำนวนบวก จงหา x",["4","6","8","9"],1,"สำหรับลำดับเรขาคณิต x²=2(18)=36 และ x เป็นบวก จึง <b>x=6</b>"],
+["กำหนด a₁=2 และ aₙ₊₁=2aₙ+3 จงหา a₄",["29","31","33","37"],3,"a₂=2(2)+3=7<br>a₃=2(7)+3=17<br>a₄=2(17)+3=<b>37</b>"],
+["ถ้า 5, x, 20 เป็นสามพจน์เรียงกันของลำดับเลขคณิต จงหา x",["10","12.5","15","17.5"],1,"ลำดับเลขคณิตมี 2x=5+20 ดังนั้น x=<b>12.5</b>"],
+["ลำดับเลขคณิตมีผลบวก 10 พจน์แรกเท่ากับ 145 และ a₁₀=28 จงหา a₁",["1","2","3","4"],0,"S₁₀=10/2(a₁+a₁₀)<br>145=5(a₁+28)<br>a₁+28=29 จึง <b>a₁=1</b>"],
+["ลำดับเรขาคณิตมี a₁=3 และ r=2 จงหาผลบวก 8 พจน์แรก",["765","768","770","780"],0,"ใช้ Sₙ=a₁(rⁿ-1)/(r-1)<br>S₈=3(2⁸-1)/(2-1)=3(255)=<b>765</b>"]
+],
+series:[
+["จงหาผลบวก 3+7+11+...+79",["780","800","820","840"],2,"เป็นอนุกรมเลขคณิต a₁=3,d=4,aₙ=79<br>79=3+(n-1)4 จึง n=20<br>S₂₀=20/2(3+79)=<b>820</b>"],
+["จงหาผลบวก 5+8+11+...+50",["385","400","440","495"],2,"a₁=5,d=3,aₙ=50<br>50=5+(n-1)3 จึง n=16<br>S₁₆=16/2(5+50)=<b>440</b>"],
+["จงหาผลบวก 2+6+18+54+...+1458",["2186","2184","2190","2200"],0,"เป็นเรขาคณิต a₁=2,r=3<br>1458=2(3ⁿ⁻¹) จึง 3ⁿ⁻¹=729=3⁶ ทำให้ n=7<br>S₇=2(3⁷-1)/(3-1)=<b>2186</b>"],
+["อนุกรมเรขาคณิตมี a₁=81 และ r=1/3 จงหาผลบวก 5 พจน์แรก",["120","121","122","123"],1,"S₅=81[1-(1/3)⁵]/[1-(1/3)]<br>=81(242/243)/(2/3)=<b>121</b>"],
+["กำหนด Sₙ=2n²+3n เป็นผลบวก n พจน์แรก จงหา a₁₀",["39","41","43","45"],2,"aₙ=Sₙ-Sₙ₋₁<br>S₁₀=230 และ S₉=189<br>a₁₀=230-189=<b>41</b>"],
+["ถ้า Sₙ=n²+2n เป็นผลบวก n พจน์แรก จงหา a₁₅",["29","30","31","32"],2,"a₁₅=S₁₅-S₁₄<br>S₁₅=255, S₁₄=224<br>ดังนั้น a₁₅=<b>31</b>"],
+["อนุกรม 4+7+10+...+100 มีผลบวกเท่าใด?",["1680","1716","1768","1800"],1,"100=4+(n-1)3 จึง n=33<br>S₃₃=33/2(4+100)=<b>1716</b>"],
+["ถ้าอนุกรมเรขาคณิตมีผลบวก 4 พจน์แรกเท่ากับ 30 และ r=2 จงหา a₁",["1","2","3","4"],1,"S₄=a₁(2⁴-1)/(2-1)=15a₁<br>30=15a₁ จึง <b>a₁=2</b>"],
+["จงหาผลบวกอนุกรม 1-2+4-8+...+1024",["-683","-682","683","682"],2,"เป็นเรขาคณิต a₁=1,r=-2<br>1024=(-2)¹⁰ จึงมี 11 พจน์<br>S₁₁=(1-(-2)¹¹)/(1-(-2))=(1+2048)/3=<b>683</b>"],
+["อนุกรมเลขคณิตมี S₁₀=150 และ S₂₀=500 จงหา S₃₀",["900","950","1000","1050"],3,"Sₙ=n/2[2a₁+(n-1)d]<br>S₁₀=150 และ S₂₀=500<br>จากสองสมการได้ a₁=6 และ d=2<br>S₃₀=30/2[12+58(2)]=<b>1860</b>"]
+]};
+
+let topic="",q=0,score=0;
+function startQuiz(t){topic=t;q=0;score=0;menu.classList.add("hidden");result.classList.add("hidden");quiz.classList.remove("hidden");showQuestion()}
+function showQuestion(){
+let d=questions[topic][q];stage.textContent=`ด่าน ${q+1} / 10`;document.getElementById("score").textContent=`คะแนน: ${score}`;progress.style.width=((q+1)*10)+"%";question.innerHTML=d[0];answers.innerHTML="";
+d[1].forEach((a,i)=>{let b=document.createElement("button");b.className="answer";b.innerHTML=`${["①","②","③","④"][i]} ${a}`;b.onclick=()=>checkAnswer(i);answers.appendChild(b)});explanation.classList.add("hidden")}
+function checkAnswer(i){let d=questions[topic][q];if(i===d[2]){score++;if(q<9){q++;showQuestion()}else{showResult()}}else{explanationText.innerHTML=d[3];explanation.classList.remove("hidden")}}
+function retryQuestion(){explanation.classList.add("hidden")}
+function showResult(){quiz.classList.add("hidden");result.classList.remove("hidden");resultTopic.textContent="แบบทดสอบเรื่อง "+(topic==="sequence"?"ลำดับ":"อนุกรม");resultScore.textContent=`${score} / 10`;resultMessage.textContent=score===10?"🌟 ยอดเยี่ยม! ตอบถูกครบทุกข้อ":score>=8?"👏 ทำได้ดีมาก!":score>=5?"👍 ผ่านแล้ว ลองทบทวนเพิ่มเติมได้":"📖 ลองทบทวนวิธีทำแล้วทำใหม่อีกครั้ง"}
+function restartQuiz(){startQuiz(topic)}
+function backMenu(){quiz.classList.add("hidden");result.classList.add("hidden");menu.classList.remove("hidden")}
+</script>
+</body>
+</html>
